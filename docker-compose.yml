@@ -1,0 +1,19 @@
+services:
+  app:
+    build: .
+    networks:
+      - back-net
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - back-net
+    depends_on:
+      - app
+
+networks:
+  back-net:
