@@ -3,6 +3,14 @@ services:
     build: .
     networks:
       - back-net
+    volumes:
+      - app-data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   nginx:
     image: nginx:alpine
@@ -13,7 +21,11 @@ services:
     networks:
       - back-net
     depends_on:
-      - app
+      app:
+        condition: service_healthy
+
+volumes:
+  app-data:
 
 networks:
   back-net:
