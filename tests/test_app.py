@@ -1,12 +1,10 @@
 import os
 import tempfile
-
-# musi byc przed importem app!
-tmpdir = tempfile.mkdtemp()
-os.environ['DATA_FILE'] = os.path.join(tmpdir, 'items.json')
-
 import pytest
-from app import app
+
+os.environ['DATA_FILE'] = os.path.join(tempfile.mkdtemp(), 'items.json')
+
+from app import app  # noqa: E402
 
 
 @pytest.fixture
