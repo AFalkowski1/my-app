@@ -1,16 +1,19 @@
-import pytest
-import tempfile
 import os
+import tempfile
+
+# musi byc przed importem app!
+tmpdir = tempfile.mkdtemp()
+os.environ['DATA_FILE'] = os.path.join(tmpdir, 'items.json')
+
+import pytest
 from app import app
 
 
 @pytest.fixture
 def client():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        app.config['TESTING'] = True
-        os.environ['DATA_FILE'] = os.path.join(tmpdir, 'items.json')
-        with app.test_client() as client:
-            yield client
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
 
 
 def test_health(client):
