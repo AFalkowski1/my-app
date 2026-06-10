@@ -4,7 +4,7 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-DATA_FILE = '/data/items.json'
+DATA_FILE = os.environ.get('DATA_FILE', '/data/items.json')
 
 
 def read_items():
